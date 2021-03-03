@@ -59,7 +59,7 @@
             NSString *message = [self jsonEncodeString:json];
             NSDictionary *result = @{@"fromUsername":[@"ttht_junFXINYU" stringByAppendingString:[XXSettingConfig.shared.config socketNum]],@"toUsername": [@"ttht_junSXINYU" stringByAppendingString:[XXSettingConfig.shared.config socketNum]],@"message":message,@"messageType": @"single"};
             NSLog(@"[XXWebServer]返回数据：%@",result);
-            [self.webSocket send:[self jsonEncodeData:result]];
+            [self.webSocket send:[self jsonEncodeString:result]];
         }
     }
 }

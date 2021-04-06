@@ -21,6 +21,10 @@
 
 @property (nonatomic, weak) id<XXWebServerDelegate> delegate;
 
+@property (nonatomic, copy) NSString *webSocketUrl;
+@property (nonatomic, copy) NSString *webSocketOther;
+@property (nonatomic, copy) NSString *webSocketMine;
+
 @property (nonatomic, copy) NSString *webPort;//端口号
 @property (nonatomic, copy) NSString *localServerUrl;//本地服务器url
 

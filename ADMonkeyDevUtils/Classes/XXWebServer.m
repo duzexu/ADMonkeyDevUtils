@@ -47,7 +47,15 @@
 }
 
 - (void)startWebServer {
-    NSString *url = [NSString stringWithFormat:@"ws://%@/websocket/ttht_junFXINYU%@",[XXSettingConfig.shared.config host],[XXSettingConfig.shared.config socketNum]];
+    NSString *url = [NSString stringWithFormat:@"%@/%@",_webSocketUrl,_webSocketOther];
+    _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
+    _webSocket.delegate = self;
+    [_webSocket open];
+}
+
+- (void)reconnect {
+    _webSocket.delegate = nil;
+    NSString *url = [NSString stringWithFormat:@"%@/%@",_webSocketUrl,_webSocketOther];
     _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
     _webSocket.delegate = self;
     [_webSocket open];
@@ -57,7 +65,7 @@
     if (_webSocket.readyState == SR_OPEN) {
         if (json) {
             NSString *message = [self jsonEncodeString:json];
-            NSDictionary *result = @{@"fromUsername":[@"ttht_junFXINYU" stringByAppendingString:[XXSettingConfig.shared.config socketNum]],@"toUsername": [@"ttht_junSXINYU" stringByAppendingString:[XXSettingConfig.shared.config socketNum]],@"message":message,@"messageType": @"single"};
+            NSDictionary *result = @{@"fromUsername":_webSocketMine,@"toUsername": _webSocketOther,@"message":message,@"messageType": @"single"};
             NSLog(@"[XXWebServer]返回数据：%@",result);
             [self.webSocket send:[self jsonEncodeString:result]];
         }
@@ -84,6 +92,7 @@
 }
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
     NSLog(@"[XXWebServer]连接断开 %@",error);
+    [self reconnect];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
@@ -114,7 +123,7 @@
 //异常捕获
 void SignalExceptionHandler(int signal)
 {
-    NSLog(@"[旺信]崩溃");
+    NSLog(@"[XXWebServer]崩溃");
 }
 
 void InstallSignalHandler(void)
@@ -140,7 +149,7 @@ void HandleException(NSException *exception)
    // 异常名称
    NSString *name = [exception name];
    NSString *exceptionInfo = [NSString stringWithFormat:@"Exception reason：%@\nException name:%@\nException stack：%@",name, reason, stackArray];
-   NSLog(@"[旺信]崩溃信息%@", exceptionInfo);
+   NSLog(@"[XXWebServer]崩溃信息%@", exceptionInfo);
 }
 
 void InstallUncaughtExceptionHandler(void)

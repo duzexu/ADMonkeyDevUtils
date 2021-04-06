@@ -47,7 +47,7 @@
 }
 
 - (void)startWebServer {
-    NSString *url = [NSString stringWithFormat:@"%@/%@",_webSocketUrl,_webSocketOther];
+    NSString *url = [NSString stringWithFormat:@"%@/%@",_webSocketUrl,_webSocketMine];
     _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
     _webSocket.delegate = self;
     [_webSocket open];
@@ -55,7 +55,7 @@
 
 - (void)reconnect {
     _webSocket.delegate = nil;
-    NSString *url = [NSString stringWithFormat:@"%@/%@",_webSocketUrl,_webSocketOther];
+    NSString *url = [NSString stringWithFormat:@"%@/%@",_webSocketUrl,_webSocketMine];
     _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
     _webSocket.delegate = self;
     [_webSocket open];

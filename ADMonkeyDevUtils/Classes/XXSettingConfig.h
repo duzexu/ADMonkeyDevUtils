@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface XXSettingConfig : NSObject
 
 @property (nonatomic, strong) ServerSettingForm *config;
+@property (nonatomic, strong, class) NSString *defaultHost;
 
 + (instancetype)shared;
 - (void)initSetting;

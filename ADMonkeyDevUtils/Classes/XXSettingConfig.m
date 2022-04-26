@@ -91,6 +91,10 @@
     return _sharedConfig;
 }
 
++ (void)setDefaultHost:(NSString *)defaultHost {
+    [[NSUserDefaults standardUserDefaults] setValue:defaultHost forKey:@"host"];
+}
+
 - (instancetype)init
 {
     self = [super init];
